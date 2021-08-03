@@ -91,6 +91,12 @@ const displayMovements = movements => {
 
 displayMovements(account1.movements);
 
+const calcDisplayBalance = movements => {
+  const balance = movements.reduce((acc, mov) => acc + mov, 0);
+  labelBalance.textContent = `${balance} €`;
+};
+calcDisplayBalance(account1.movements);
+
 /**
  * Takes name and convert to initials
  * @param {String} string String of account owner name
@@ -112,25 +118,4 @@ createUsernames(accounts);
 /////////////////////////////////////////////////
 // LECTURES
 
-// const currencies = new Map([
-//   ['USD', 'United States dollar'],
-//   ['EUR', 'Euro'],
-//   ['GBP', 'Pound sterling'],
-// ]);
-
-//const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
-
-// const eurToUsd = 1.1;
-
-// const movementsUSD = movements.map(mov => mov * eurToUsd);
-
-// console.log(movementsUSD);
-
-// const movementsDescriptions = movements.map(
-//   (mov, i) =>
-//     `Movement ${i + 1}: You ${mov > 0 ? 'deposited' : 'withdrew'} ${Math.abs(
-//       mov
-//     )}`
-// );
-// console.log(movementsDescriptions);
 /////////////////////////////////////////////////
