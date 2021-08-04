@@ -102,11 +102,28 @@ const calcDisplayBalance = movements => {
 };
 calcDisplayBalance(account1.movements);
 
+/**
+ * Add total income, outgoing and interest if interest is larger than 1 €
+ * @param {Array} Array Array of account movements
+ * @returns {Number}
+ */
 const calcDisplaySummary = movements => {
   const incomes = movements
     .filter(mov => mov > 0)
     .reduce((acc, mov) => acc + mov, 0);
   labelSumIn.textContent = `${incomes}€`;
+
+  const outgoing = movements
+    .filter(mov => mov < 0)
+    .reduce((acc, mov) => acc + mov, 0);
+  labelSumOut.textContent = `${Math.abs(outgoing)}€`;
+
+  const interest = movements
+    .filter(mov => mov > 0)
+    .map(deposit => (deposit * 1.2) / 100)
+    .filter(int => int >= 1)
+    .reduce((acc, int) => acc + int, 0);
+  labelSumInterest.textContent = `${interest}€`;
 };
 calcDisplaySummary(account1.movements);
 /**
