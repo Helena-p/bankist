@@ -79,7 +79,7 @@ const displayMovements = movements => {
       <div class="movements__type movements__type--${type}">${
       i + 1
     } ${type}</div>
-      <div class="movements__value">${mov}€</div>
+      <div class="movements__value">${mov} €</div>
     </div>
   `;
     // Method accepts two str as parameter
@@ -91,16 +91,28 @@ const displayMovements = movements => {
 
 displayMovements(account1.movements);
 
+/**
+ * Adds values & render account balance to user
+ * @param {Array} Array Account deposits & withdrawals
+ * @return {Number}  Account Balance
+ */
 const calcDisplayBalance = movements => {
   const balance = movements.reduce((acc, mov) => acc + mov, 0);
   labelBalance.textContent = `${balance} €`;
 };
 calcDisplayBalance(account1.movements);
 
+const calcDisplaySummary = movements => {
+  const incomes = movements
+    .filter(mov => mov > 0)
+    .reduce((acc, mov) => acc + mov, 0);
+  labelSumIn.textContent = `${incomes}€`;
+};
+calcDisplaySummary(account1.movements);
 /**
  * Takes name and convert to initials
- * @param {String} string String of account owner name
- * @returns{String} string  Account owner initials
+ * @param {String} String String of account owner name
+ * @returns{String} String  Account owner initials
  */
 const createUsernames = accounts => {
   accounts.forEach(acc => {
@@ -117,5 +129,6 @@ createUsernames(accounts);
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
 // LECTURES
+const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
 
 /////////////////////////////////////////////////
