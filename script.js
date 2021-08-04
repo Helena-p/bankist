@@ -94,9 +94,9 @@ const displayMovements = movements => {
  * @param {Array} Array Account deposits & withdrawals
  * @return {Number}  Account Balance
  */
-const calcDisplayBalance = movements => {
-  const balance = movements.reduce((acc, mov) => acc + mov, 0);
-  labelBalance.textContent = `${balance} €`;
+const calcDisplayBalance = acc => {
+  acc.balance = acc.movements.reduce((acc, mov) => acc + mov, 0);
+  labelBalance.textContent = `${acc.balance} €`;
 };
 
 /**
@@ -140,12 +140,24 @@ const createUsernames = accounts => {
 
 createUsernames(accounts);
 
+// Update account after account movements
+const updateUI = acc => {
+  //Display movements
+  displayMovements(acc.movements);
+
+  //Display balance
+  calcDisplayBalance(acc);
+
+  //Display summary
+  calcDisplaySummary(acc);
+};
+
 //=======================
 // EVENTHANDLERS
 //=======================
 let currentAccount;
 
-btnLogin.addEventListener('click', function (e) {
+btnLogin.addEventListener('click', e => {
   // Prevent form to reload page on submit
   e.preventDefault();
 
@@ -164,16 +176,34 @@ btnLogin.addEventListener('click', function (e) {
     inputLoginUsername.value = inputLoginPin.value = '';
     inputLoginPin.blur();
 
-    //Display movements
-    displayMovements(currentAccount.movements);
-
-    //Display balance
-    calcDisplayBalance(currentAccount.movements);
-
-    //Display summary
-    calcDisplaySummary(currentAccount);
+    updateUI(currentAccount);
   }
 });
+
+btnTransfer.addEventListener('click', e => {
+  e.preventDefault();
+  const amount = Number(inputTransferAmount.value);
+  const receiverAcc = accounts.find(
+    acc => acc.username === inputTransferTo.value
+  );
+
+  //Empty inputfields
+  inputTransferAmount.value = inputTransferTo.value = ' ';
+
+  if (
+    amount > 0 &&
+    receiverAcc &&
+    currentAccount.balance >= amount &&
+    receiverAcc?.username !== currentAccount.username
+  ) {
+    currentAccount.movements.push(-amount);
+    receiverAcc.movements.push(amount);
+
+    // Update UI
+    updateUI(currentAccount);
+  }
+});
+
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
 // LECTURES
