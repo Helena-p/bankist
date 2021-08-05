@@ -1,9 +1,5 @@
 'use strict';
 
-/////////////////////////////////////////////////
-/////////////////////////////////////////////////
-// BANKIST APP
-
 // Data
 const account1 = {
   owner: 'Jonas Schmedtmann',
@@ -248,3 +244,5 @@ btnSort.addEventListener('click', e => {
   // Flips variable
   sorted = !sorted;
 });
+
+///////////////////////////////////////////////
