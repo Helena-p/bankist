@@ -67,11 +67,13 @@ const inputClosePin = document.querySelector('.form__input--pin');
  * @param {array} Array Array of numbers
  * @return {string}     String of account movements
  */
-const displayMovements = movements => {
+const displayMovements = (movements, sort = false) => {
   // Empty list of data before inserting the updated data
   containerMovements.innerHTML = '';
+  // Create a copy and sort in ascending order by compare callback function
+  const movs = sort ? movements.slice().sort((a, b) => a - b) : movements;
 
-  movements.forEach((mov, i) => {
+  movs.forEach((mov, i) => {
     const type = mov > 0 ? 'deposit' : 'withdrawal';
 
     const html = `
@@ -204,6 +206,19 @@ btnTransfer.addEventListener('click', e => {
   }
 });
 
+btnLoan.addEventListener('click', e => {
+  e.preventDefault();
+  const amount = Number(inputLoanAmount.value);
+
+  if (amount > 0 && currentAccount.movements.some(mov => mov >= amount * 0.1)) {
+    // Add movement
+    currentAccount.movements.push(amount);
+    // Update UI
+    updateUI(currentAccount);
+  }
+  inputLoanAmount.value = '';
+});
+
 btnClose.addEventListener('click', e => {
   e.preventDefault();
 
@@ -225,9 +240,11 @@ btnClose.addEventListener('click', e => {
   }
 });
 
-/////////////////////////////////////////////////
-/////////////////////////////////////////////////
-// LECTURES
-const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
+let sorted = false;
 
-/////////////////////////////////////////////////
+btnSort.addEventListener('click', e => {
+  e.preventDefault();
+  displayMovements(currentAccount.movem, ents, !sorted);
+  // Flips variable
+  sorted = !sorted;
+});
