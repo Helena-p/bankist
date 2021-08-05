@@ -240,7 +240,7 @@ let sorted = false;
 
 btnSort.addEventListener('click', e => {
   e.preventDefault();
-  displayMovements(currentAccount.movem, ents, !sorted);
+  displayMovements(currentAccount.movements, !sorted);
   // Flips variable
   sorted = !sorted;
 });
